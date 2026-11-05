@@ -1,8 +1,11 @@
 
 #pragma once
 
+#include <SFML/Network.hpp>
 #include <SFML/Graphics.hpp>
 #include "Board.h"
+#include "Server.h"
+#include "Client.h"
 
 class Game
 {
@@ -20,7 +23,11 @@ class Game
 
  private:
 	sf::RenderWindow& window;
-
+	std::unique_ptr<Server> server;
+	std::unique_ptr<Client> client;
+	std::unique_ptr < sf::Text> HostText;
+	std::unique_ptr < sf::Text> JoinText;
+	std::unique_ptr < sf::Font> font;
 	std::shared_ptr<Board> board;
 };
 
