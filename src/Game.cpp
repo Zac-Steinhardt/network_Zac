@@ -44,11 +44,31 @@ void Game::update(float dt)
 void Game::render()
 {
     board->render();  
+        window.draw(*HostText);
+        window.draw(*JoinText);
 }
 
 void Game::mouseButtonPressed(const sf::Event::MouseButtonPressed* event)
 {
     board->mouseButtonPressed(event);
+    if (gamestate == MENU)
+    {
+        if (HostText->getGlobalBounds().contains(sf::Vector2f(event->position)))
+        {
+            gamestate = PLAYING;
+            std::cout << "Creating server." << std::endl;
+            server = std::make_unique<Server>();
+            server->init();
+            server->run();
+        }
+        else if (JoinText->getGlobalBounds().contains(sf::Vector2f(event->position)))
+        {
+            gamestate = PLAYING;
+            std::cout << "attemting to connect." << std::endl;
+            client = std::make_unique<Client>();
+            client->connect();
+        }
+    }
 }
 
 void Game::mouseButtonReleased(const sf::Event::MouseButtonReleased* event)
