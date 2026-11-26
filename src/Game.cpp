@@ -16,6 +16,7 @@ Game::~Game()
 
 bool Game::init()
 {
+    gamestate = MENU;
     board = std::make_shared<Board>(window);
     board->init();   
     font = std::make_unique<sf::Font>();
@@ -44,8 +45,11 @@ void Game::update(float dt)
 void Game::render()
 {
     board->render();  
+    if (gamestate == MENU)
+    {
         window.draw(*HostText);
         window.draw(*JoinText);
+    }
 }
 
 void Game::mouseButtonPressed(const sf::Event::MouseButtonPressed* event)
@@ -67,6 +71,7 @@ void Game::mouseButtonPressed(const sf::Event::MouseButtonPressed* event)
             std::cout << "attemting to connect." << std::endl;
             client = std::make_unique<Client>();
             client->connect();
+            client->run();
         }
     }
 }
